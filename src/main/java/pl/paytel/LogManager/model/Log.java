@@ -4,10 +4,19 @@ import java.time.LocalDateTime;
 
 public class Log {
 
+    private Long id;
     private LocalDateTime date;
     private String level;
     private String loggingClass;
     private String content;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public LocalDateTime getDate() {
         return date;
@@ -40,5 +49,4 @@ public class Log {
     public void setContent(String content) {
         this.content = content;
     }
-
 }
