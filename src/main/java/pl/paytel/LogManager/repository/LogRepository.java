@@ -1,14 +1,16 @@
 package pl.paytel.LogManager.repository;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import pl.paytel.LogManager.model.Log;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-public interface LogRepository {
+public interface LogRepository extends PagingAndSortingRepository<Log, Long> {
 
-    Log save(Log log);
+    List<Log> getLogsByDateBetween(LocalDateTime dateFrom, LocalDateTime dateTo, Pageable pageable);
 
-    List<Log> getLogsByParameters(LocalDateTime dateFrom, LocalDateTime dateTo, Integer pageNumber, Integer pageSize);
+    List<Log> getLogsByDateBetween(LocalDateTime dateFrom, LocalDateTime dateTo);
 
 }

@@ -11,7 +11,6 @@ import pl.paytel.LogManager.service.LogService;
 
 import java.time.LocalDateTime;
 import java.util.IllegalFormatException;
-import java.util.List;
 
 @RestController
 @RequestMapping("/log")
@@ -36,16 +35,15 @@ public class LogController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Log>> getLogs(@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateFrom,
+    public ResponseEntity<Iterable<Log>> getLogs(@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateFrom,
                                              @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateTo,
                                              @RequestParam(required = false) Integer pageNumber,
                                              @RequestParam(required = false) Integer pageSize,
                                              @RequestParam(required = false) String resultFormat) {
         try {
-            List<Log> logsByParameters = logService.getLogsByParameters(dateFrom, dateTo, pageNumber, pageSize);
-            return new ResponseEntity<>(logsByParameters, HttpStatus.OK);
+            return new ResponseEntity<>(logService.getLogsByParameters(dateFrom, dateTo, pageNumber, pageSize), HttpStatus.OK);
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
         }
     }
 }
