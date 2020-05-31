@@ -11,11 +11,13 @@ import org.springframework.test.web.servlet.MockMvc;
 import pl.paytel.LogManager.model.Log;
 import pl.paytel.LogManager.service.LogService;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.IllegalFormatException;
 
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -69,5 +71,19 @@ public class LogControllerTest {
 
         mockMvc.perform(get("/log"))
                 .andExpect(status().isInternalServerError());
+    }
+
+    @Test
+    public void shouldParseParams() throws Exception {
+        when(logService.getLogsByParameters(any(), any(), any(), any())).thenReturn(new ArrayList<>());
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime tomorrow = now.plusDays(1);
+        String nowIso = DateTimeFormatter.ISO_DATE_TIME.format(now);
+        String tomorrowIso = DateTimeFormatter.ISO_DATE_TIME.format(tomorrow);
+        Integer pageNumber = 0;
+        Integer pageSize = 5;
+        mockMvc.perform(get(String.format("/log?dateFrom=%s&dateTo=%s&pageNumber=%d&pageSize=%d", nowIso, tomorrowIso, pageNumber, pageSize)))
+                .andExpect(status().isOk());
+        verify(logService).getLogsByParameters(now, tomorrow, pageNumber, pageSize);
     }
 }

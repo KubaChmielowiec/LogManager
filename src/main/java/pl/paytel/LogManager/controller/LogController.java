@@ -1,6 +1,7 @@
 package pl.paytel.LogManager.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -35,8 +36,8 @@ public class LogController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Log>> getLogs(@RequestParam(required = false) LocalDateTime dateFrom,
-                                             @RequestParam(required = false) LocalDateTime dateTo,
+    public ResponseEntity<List<Log>> getLogs(@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateFrom,
+                                             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateTo,
                                              @RequestParam(required = false) Integer pageNumber,
                                              @RequestParam(required = false) Integer pageSize,
                                              @RequestParam(required = false) String resultFormat) {
