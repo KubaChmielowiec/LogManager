@@ -32,12 +32,11 @@ public class LogController {
         }
     }
 
-    @GetMapping
+    @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public ResponseEntity<Iterable<Log>> getLogs(@RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime dateFrom,
                                              @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime dateTo,
                                              @RequestParam(required = false) Integer pageNumber,
-                                             @RequestParam(required = false) Integer pageSize,
-                                             @RequestParam(required = false) String resultFormat) {
+                                             @RequestParam(required = false) Integer pageSize) {
         try {
             return new ResponseEntity<>(logService.getLogsByParameters(dateFrom, dateTo, pageNumber, pageSize), HttpStatus.OK);
         } catch (Exception e) {
